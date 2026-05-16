@@ -1,6 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
-  BookOpen, LayoutDashboard, Map, CalendarDays,
+  LayoutDashboard, Map, CalendarDays,
   Users, List, LogOut, Armchair, CreditCard, User,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -39,12 +39,17 @@ export default function Layout({ admin }) {
       <aside className="w-56 bg-white border-r border-gray-100 flex flex-col shrink-0 sticky top-0 h-screen">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-gray-100 flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-gray-900 rounded-lg flex items-center justify-center">
-            <BookOpen className="w-4 h-4 text-white" />
-          </div>
+          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="8" width="6" height="16" fill="#1F2937" rx="1"/>
+            <rect x="11" y="4" width="6" height="20" fill="#3B82F6" rx="1"/>
+            <rect x="21" y="10" width="4" height="14" fill="#10B981" rx="1"/>
+            <circle cx="6" cy="5" r="1" fill="#F59E0B"/>
+            <circle cx="14" cy="2" r="1" fill="#F59E0B"/>
+            <circle cx="24" cy="8" r="1" fill="#F59E0B"/>
+          </svg>
           <div>
-            <span className="font-display font-medium text-gray-900 text-[14px] leading-tight block">
-              Study Library
+            <span className="font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 text-[14px] leading-tight block">
+              SpaceShift
             </span>
             <span className="text-[10px] text-gray-400 capitalize">{user?.role} panel</span>
           </div>

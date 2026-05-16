@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -28,9 +28,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <div className="flex items-center gap-2 justify-center mb-8">
-          <BookOpen className="w-6 h-6 text-gray-800" />
-          <span className="font-display text-xl font-medium text-gray-900">Study Library</span>
+        <div className="flex items-center gap-3 justify-center mb-8">
+          <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="8" height="16" fill="#1F2937" rx="1"/>
+            <rect x="14" y="4" width="8" height="20" fill="#3B82F6" rx="1"/>
+            <rect x="24" y="10" width="4" height="14" fill="#10B981" rx="1"/>
+            <circle cx="8" cy="6" r="1.5" fill="#F59E0B"/>
+            <circle cx="18" cy="2" r="1.5" fill="#F59E0B"/>
+            <circle cx="28" cy="8" r="1.5" fill="#F59E0B"/>
+          </svg>
+          <span className="font-display text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SpaceShift</span>
         </div>
 
         <div className="card">

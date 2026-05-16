@@ -52,7 +52,7 @@ export function useRazorpay() {
       key:         orderData.keyId,
       amount:      orderData.amount,
       currency:    orderData.currency,
-      name:        'Study Library',
+      name:        'SpaceShift',
       description: orderData.description,
       order_id:    orderData.orderId,
       prefill:     orderData.prefill,
