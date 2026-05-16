@@ -54,3 +54,38 @@ router.get('/me', protect, (req, res) => {
 });
 
 module.exports = router;
+
+// PATCH /api/auth/profile — update name and phone
+router.patch('/profile', protect, async (req, res, next) => {
+  try {
+    const { name, phone } = req.body;
+    if (!name) return res.status(400).json({ error: 'Name is required.' });
+    const user = await require('../models').User.findByIdAndUpdate(
+      req.user._id,
+      { name: name.trim(), phone: phone?.trim() },
+      { new: true, runValidators: true }
+    );
+    res.json(user);
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/auth/change-password
+router.patch('/change-password', protect, async (req, res, next) => {
+  try {
+    const bcrypt = require('bcryptjs');
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'currentPassword and newPassword are required.' });
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'New password must be at least 8 characters.' });
+    }
+    const user = await require('../models').User.findById(req.user._id).select('+passwordHash');
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) return res.status(401).json({ error: 'Current password is incorrect.' });
+
+    user.passwordHash = await bcrypt.hash(newPassword, 12);
+    await user.save();
+    res.json({ message: 'Password changed successfully.' });
+  } catch (err) { next(err); }
+});

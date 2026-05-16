@@ -1,10 +1,10 @@
-# 📚 Study Library Management System
+# Study Library Management System
 
 A **Space-as-a-Service** platform for private reading rooms where students pay for dedicated study seats across named time shifts (Morning, Evening, Night, Full Day).
 
 ---
 
-## ✨ Features
+## Features
 
 | Area | Capabilities |
 |---|---|
@@ -18,7 +18,7 @@ A **Space-as-a-Service** platform for private reading rooms where students pay f
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 study-library/
@@ -85,7 +85,7 @@ study-library/
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -200,7 +200,7 @@ Uses `mongodb-memory-server` — no real database needed.
 
 ---
 
-## 🌐 API Reference
+##  API Reference
 
 All routes are prefixed with `/api`. Protected routes require:
 ```
@@ -254,7 +254,7 @@ Authorization: Bearer <accessToken>
 
 ---
 
-## 🔐 Authentication Flow
+##  Authentication Flow
 
 ```
 POST /api/auth/login
@@ -272,7 +272,7 @@ The Axios client in `frontend/src/services/api.js` handles refresh automatically
 
 ---
 
-## 🏗️ Deployment
+##  Deployment
 
 ### Backend (Railway / Render / Fly.io)
 
@@ -289,7 +289,7 @@ The Axios client in `frontend/src/services/api.js` handles refresh automatically
 
 ---
 
-## 🗃️ Database Schema Summary
+##  Database Schema Summary
 
 ```
 User       { name, email, phone, role, passwordHash, refreshToken, isActive }
@@ -303,7 +303,7 @@ Booking    { user→, seat→, shift→, startDate, endDate, durationType,
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repo
 2. Create a feature branch: `git checkout -b feature/my-feature`
@@ -313,6 +313,6 @@ Booking    { user→, seat→, shift→, startDate, endDate, durationType,
 
 ---
 
-## 📄 License
+##  License
 
 MIT — free to use for personal and commercial projects.

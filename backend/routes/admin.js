@@ -90,7 +90,9 @@ router.get('/occupancy', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// CRUD: Seats
+// ── Seat Management ──────────────────────────────────────────────────────────
+
+// GET /api/admin/seats — all seats (active + inactive)
 router.get('/seats', async (req, res, next) => {
   try {
     const seats = await Seat.find().sort({ row: 1, number: 1 }).lean();
@@ -98,18 +100,52 @@ router.get('/seats', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+// POST /api/admin/seats — add a new seat to the library map
 router.post('/seats', async (req, res, next) => {
   try {
-    const seat = await Seat.create(req.body);
+    const { row, number, section = 'Main', baseMonthlyPrice, amenities } = req.body;
+    if (!row || !number || !baseMonthlyPrice) {
+      return res.status(400).json({ error: 'row, number, and baseMonthlyPrice are required.' });
+    }
+    const label = `${row.toUpperCase()}${number}`;
+    const seat  = await Seat.create({ label, row: row.toUpperCase(), number, section, baseMonthlyPrice, amenities });
     res.status(201).json(seat);
   } catch (err) { next(err); }
 });
 
+// PATCH /api/admin/seats/:id — update seat details (price, amenities, label etc.)
 router.patch('/seats/:id', async (req, res, next) => {
   try {
     const seat = await Seat.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!seat) return res.status(404).json({ error: 'Seat not found.' });
     res.json(seat);
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/admin/seats/:id/toggle — activate or deactivate a seat
+router.patch('/seats/:id/toggle', async (req, res, next) => {
+  try {
+    const seat = await Seat.findById(req.params.id);
+    if (!seat) return res.status(404).json({ error: 'Seat not found.' });
+    seat.isActive = !seat.isActive;
+    await seat.save();
+    res.json({ message: `Seat ${seat.label} is now ${seat.isActive ? 'active' : 'inactive'}.`, seat });
+  } catch (err) { next(err); }
+});
+
+// DELETE /api/admin/seats/:id — permanently delete a seat (only if no active bookings)
+router.delete('/seats/:id', async (req, res, next) => {
+  try {
+    const { Booking } = require('../models');
+    const activeBookings = await Booking.countDocuments({ seat: req.params.id, status: 'active' });
+    if (activeBookings > 0) {
+      return res.status(409).json({
+        error: `Cannot delete seat — it has ${activeBookings} active booking(s). Cancel them first or deactivate the seat instead.`,
+      });
+    }
+    const seat = await Seat.findByIdAndDelete(req.params.id);
+    if (!seat) return res.status(404).json({ error: 'Seat not found.' });
+    res.json({ message: `Seat ${seat.label} permanently deleted.` });
   } catch (err) { next(err); }
 });
 

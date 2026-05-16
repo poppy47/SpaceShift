@@ -18,6 +18,7 @@ const authRouter     = require('./routes/auth');
 const bookingRouter  = require('./routes/bookings');
 const adminRouter    = require('./routes/admin');
 const seatsRouter    = require('./routes/seats');
+const paymentsRouter = require('./routes/payments');
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -34,6 +35,7 @@ app.use('/api/auth',     authRouter);
 app.use('/api/bookings', bookingRouter);
 app.use('/api/admin',    adminRouter);
 app.use('/api/seats',    seatsRouter);
+app.use('/api/payments', paymentsRouter);
 
 app.get('/health', (_req, res) => res.json({ status: 'ok', uptime: process.uptime(), ts: new Date() }));
 

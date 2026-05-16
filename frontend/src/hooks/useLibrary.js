@@ -105,3 +105,51 @@ export function useAdminSeats() {
     queryFn:  () => api.get('/admin/seats').then((r) => r.data),
   });
 }
+
+// ── Payment History ───────────────────────────────────────────────────────────
+export function usePaymentHistory() {
+  return useQuery({
+    queryKey: ['paymentHistory'],
+    queryFn:  () => api.get('/bookings/my').then((r) => r.data),
+  });
+}
+
+// ── Admin Seat Mutations ──────────────────────────────────────────────────────
+export function useAddSeat() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => api.post('/admin/seats', data).then((r) => r.data),
+    onSuccess: (seat) => {
+      toast.success(`Seat ${seat.label} added.`);
+      qc.invalidateQueries({ queryKey: ['adminSeats'] });
+      qc.invalidateQueries({ queryKey: ['seatMap'] });
+    },
+    onError: (err) => toast.error(err.response?.data?.error || 'Failed to add seat.'),
+  });
+}
+
+export function useDeleteSeat() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.delete(`/admin/seats/${id}`).then((r) => r.data),
+    onSuccess: () => {
+      toast.success('Seat deleted.');
+      qc.invalidateQueries({ queryKey: ['adminSeats'] });
+      qc.invalidateQueries({ queryKey: ['seatMap'] });
+    },
+    onError: (err) => toast.error(err.response?.data?.error || 'Cannot delete seat.'),
+  });
+}
+
+export function useToggleSeat() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => api.patch(`/admin/seats/${id}/toggle`).then((r) => r.data),
+    onSuccess: (data) => {
+      toast.success(data.message || 'Seat updated.');
+      qc.invalidateQueries({ queryKey: ['adminSeats'] });
+      qc.invalidateQueries({ queryKey: ['seatMap'] });
+    },
+    onError: (err) => toast.error(err.response?.data?.error || 'Toggle failed.'),
+  });
+}

@@ -61,7 +61,7 @@ const shiftSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      enum: ['Morning', 'Evening', 'Night', 'Full Day'],
+      enum: ['Morning', 'Day', 'Evening', 'Full Day'],
     },
     startTime: { type: String, required: true },
     endTime:   { type: String, required: true },
