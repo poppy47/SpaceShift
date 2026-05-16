@@ -1,4 +1,4 @@
-# Study Library Management System
+# SpaceShift
 
 A **Space-as-a-Service** platform for private reading rooms where students pay for dedicated study seats across named time shifts (Morning, Evening, Night, Full Day).
 
