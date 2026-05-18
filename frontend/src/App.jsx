@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
+import LandingPage      from './pages/LandingPage';
 import LoginPage        from './pages/LoginPage';
 import RegisterPage     from './pages/RegisterPage';
 import StudentDashboard from './pages/StudentDashboard';
@@ -13,17 +14,11 @@ import AdminBookings    from './pages/AdminBookings';
 import AdminUsers       from './pages/AdminUsers';
 import AdminSeats       from './pages/AdminSeats';
 import Layout           from './components/layout/Layout';
+import Throbber         from './components/Throbber';
 
 function ProtectedRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth();
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-800 rounded-full animate-spin" />
-        <p className="text-xs text-gray-400">Loading…</p>
-      </div>
-    </div>
-  );
+  if (loading) return <Throbber fullScreen text="Loading…" />;
   if (!user)   return <Navigate to="/login"     replace />;
   if (adminOnly && user.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -40,6 +35,9 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
+        {/* Landing */}
+        <Route path="/" element={<LandingPage />} />
+
         {/* Public */}
         <Route path="/login"    element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
@@ -62,8 +60,7 @@ export default function App() {
           <Route path="/admin/seat-map"  element={<SeatMapPage />} />
         </Route>
 
-        <Route path="/"  element={<Navigate to="/dashboard" replace />} />
-        <Route path="*"  element={<Navigate to="/dashboard" replace />} />
+        <Route path="*"  element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
   );

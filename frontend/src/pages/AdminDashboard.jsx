@@ -1,10 +1,11 @@
 import { format } from 'date-fns';
-import { TrendingUp, Users, MapPin, Bell, Send } from 'lucide-react';
+import { TrendingUp, Users, MapPin, Bell, Send, Download } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import { useAdminDashboard, useSendReminders } from '../hooks/useLibrary';
+import { generateMonthlyReportPDF } from '../hooks/reportGenerator';
 
 const SHIFT_COLORS = { Morning: '#185FA5', Evening: '#0F6E56', Night: '#73726c', 'Full Day': '#854F0B' };
 
@@ -70,14 +71,23 @@ export default function AdminDashboard() {
           <h1 className="font-display text-2xl font-medium text-gray-900">Admin Dashboard</h1>
           <p className="text-sm text-gray-500">{format(new Date(), 'EEEE, dd MMMM yyyy')}</p>
         </div>
-        <button
-          onClick={() => sendReminders(3)}
-          disabled={isPending}
-          className="btn-secondary flex items-center gap-2"
-        >
-          <Send className="w-3.5 h-3.5" />
-          {isPending ? 'Sending…' : 'Send renewal reminders'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => generateMonthlyReportPDF(data)}
+            className="btn-secondary flex items-center gap-2"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Download Report
+          </button>
+          <button
+            onClick={() => sendReminders(3)}
+            disabled={isPending}
+            className="btn-secondary flex items-center gap-2"
+          >
+            <Send className="w-3.5 h-3.5" />
+            {isPending ? 'Sending…' : 'Send reminders'}
+          </button>
+        </div>
       </div>
 
       {/* KPI cards */}
@@ -123,7 +133,7 @@ export default function AdminDashboard() {
           </h2>
           {occupancy.length > 0 ? (
             <>
-              <div className="space-y-2.5 mb-4">
+              <div className="space-y-2.5 mb-6">
                 {occupancy.map((o) => (
                   <div key={o.shift} className="flex items-center gap-2">
                     <span className="text-xs text-gray-500 w-16 shrink-0">{o.shift}</span>
@@ -137,7 +147,7 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
-              <ResponsiveContainer width="100%" height={110}>
+              <ResponsiveContainer width="100%" height={160}>
                 <PieChart>
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={30} outerRadius={50} dataKey="value" paddingAngle={3}>
                     {pieData.map((entry) => (

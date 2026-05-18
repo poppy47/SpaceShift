@@ -39,16 +39,29 @@ export default function Layout({ admin }) {
       <aside className="w-56 bg-white border-r border-gray-100 flex flex-col shrink-0 sticky top-0 h-screen">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-gray-100 flex items-center gap-2.5">
-          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="8" width="6" height="16" fill="#1F2937" rx="1"/>
-            <rect x="11" y="4" width="6" height="20" fill="#3B82F6" rx="1"/>
-            <rect x="21" y="10" width="4" height="14" fill="#10B981" rx="1"/>
-            <circle cx="6" cy="5" r="1" fill="#F59E0B"/>
-            <circle cx="14" cy="2" r="1" fill="#F59E0B"/>
-            <circle cx="24" cy="8" r="1" fill="#F59E0B"/>
+          <svg className="w-7 h-7" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Background circle */}
+            <rect width="48" height="48" fill="none"/>
+            {/* Left book page */}
+            <rect x="8" y="10" width="14" height="20" fill="none" stroke="#000000" strokeWidth="1.5" rx="1"/>
+            {/* Right book page */}
+            <rect x="22" y="10" width="14" height="20" fill="none" stroke="#000000" strokeWidth="1.5" rx="1"/>
+            {/* Spine line */}
+            <line x1="22" y1="10" x2="22" y2="30" stroke="#000000" strokeWidth="1.5"/>
+            {/* Lines on left page */}
+            <line x1="11" y1="14" x2="19" y2="14" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="17" x2="19" y2="17" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="20" x2="19" y2="20" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="23" x2="17" y2="23" stroke="#000000" strokeWidth="1"/>
+            {/* Arrow on right page */}
+            <path d="M 28 19 L 34 25 M 34 25 L 28 31 M 34 25 L 36 25" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* Dots below */}
+            <circle cx="18" cy="36" r="2" fill="#000000"/>
+            <circle cx="24" cy="36" r="2" fill="#000000"/>
+            <circle cx="30" cy="36" r="2" fill="#000000" opacity="0.5"/>
           </svg>
           <div>
-            <span className="font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 text-[14px] leading-tight block">
+            <span className="font-display font-bold text-black text-[14px] leading-tight block">
               SpaceShift
             </span>
             <span className="text-[10px] text-gray-400 capitalize">{user?.role} panel</span>

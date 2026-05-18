@@ -29,15 +29,28 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-3 justify-center mb-8">
-          <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="8" width="8" height="16" fill="#1F2937" rx="1"/>
-            <rect x="14" y="4" width="8" height="20" fill="#3B82F6" rx="1"/>
-            <rect x="24" y="10" width="4" height="14" fill="#10B981" rx="1"/>
-            <circle cx="8" cy="6" r="1.5" fill="#F59E0B"/>
-            <circle cx="18" cy="2" r="1.5" fill="#F59E0B"/>
-            <circle cx="28" cy="8" r="1.5" fill="#F59E0B"/>
+          <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Background circle */}
+            <rect width="48" height="48" fill="none"/>
+            {/* Left book page */}
+            <rect x="8" y="10" width="14" height="20" fill="none" stroke="#000000" strokeWidth="1.5" rx="1"/>
+            {/* Right book page */}
+            <rect x="22" y="10" width="14" height="20" fill="none" stroke="#000000" strokeWidth="1.5" rx="1"/>
+            {/* Spine line */}
+            <line x1="22" y1="10" x2="22" y2="30" stroke="#000000" strokeWidth="1.5"/>
+            {/* Lines on left page */}
+            <line x1="11" y1="14" x2="19" y2="14" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="17" x2="19" y2="17" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="20" x2="19" y2="20" stroke="#000000" strokeWidth="1"/>
+            <line x1="11" y1="23" x2="17" y2="23" stroke="#000000" strokeWidth="1"/>
+            {/* Arrow on right page */}
+            <path d="M 28 19 L 34 25 M 34 25 L 28 31 M 34 25 L 36 25" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* Dots below */}
+            <circle cx="18" cy="36" r="2" fill="#000000"/>
+            <circle cx="24" cy="36" r="2" fill="#000000"/>
+            <circle cx="30" cy="36" r="2" fill="#000000" opacity="0.5"/>
           </svg>
-          <span className="font-display text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">SpaceShift</span>
+          <span className="font-display text-2xl font-bold text-black">SpaceShift</span>
         </div>
 
         <div className="card">
@@ -69,12 +82,6 @@ export default function LoginPage() {
           <p className="text-xs text-gray-500 text-center mt-5">
             No account? <Link to="/register" className="text-gray-900 font-medium hover:underline">Register here</Link>
           </p>
-
-          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-            <p className="text-[11px] text-gray-400 font-medium mb-1">Demo credentials</p>
-            <p className="text-[11px] text-gray-500">Admin: admin@library.com / Admin@123</p>
-            <p className="text-[11px] text-gray-500">Student: student@demo.com / Student@123</p>
-          </div>
         </div>
       </div>
     </div>
