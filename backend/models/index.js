@@ -48,6 +48,24 @@ const userSchema = new Schema(
       select: false,
       default: null,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+      select: false,
+      default: null,
+    },
+    otpExpiresAt: {
+      type: Date,
+      select: false,
+      default: null,
+    },
+    otpAttempts: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

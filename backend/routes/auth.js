@@ -4,11 +4,47 @@
 
 const express = require('express');
 const router  = express.Router();
-const { register, login, refreshTokens, logout } = require('../services/authService');
+const { registerInitiate, verifyOTP, resendOTP, register, login, refreshTokens, logout } = require('../services/authService');
 const { protect } = require('../middleware/auth');
 const { authLimiter } = require('../middleware/rateLimiter');
 
-// POST /api/auth/register
+// POST /api/auth/register/initiate — Start registration with OTP
+router.post('/register/initiate', authLimiter, async (req, res, next) => {
+  try {
+    const { name, email, phone, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'name, email, and password are required.' });
+    }
+    const result = await registerInitiate({ name, email, phone, password });
+    res.status(201).json(result);
+  } catch (err) { next(err); }
+});
+
+// POST /api/auth/register/verify — Verify OTP and complete registration
+router.post('/register/verify', authLimiter, async (req, res, next) => {
+  try {
+    const { userId, otp } = req.body;
+    if (!userId || !otp) {
+      return res.status(400).json({ error: 'userId and otp are required.' });
+    }
+    const result = await verifyOTP({ userId, otp });
+    res.status(200).json(result);
+  } catch (err) { next(err); }
+});
+
+// POST /api/auth/register/resend-otp — Resend OTP to email
+router.post('/register/resend-otp', authLimiter, async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required.' });
+    }
+    const result = await resendOTP({ userId });
+    res.status(200).json(result);
+  } catch (err) { next(err); }
+});
+
+// POST /api/auth/register — Direct registration (backward compatibility)
 router.post('/register', authLimiter, async (req, res, next) => {
   try {
     const { name, email, phone, password } = req.body;

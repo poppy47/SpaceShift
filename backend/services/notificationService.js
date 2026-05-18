@@ -21,6 +21,23 @@ function createTransport() {
 
 const FROM = `"Study Library" <${process.env.SMTP_USER}>`;
 
+async function sendOtpEmail({ to, userName, otp }) {
+  const transporter = createTransport();
+  await transporter.sendMail({
+    from: FROM,
+    to,
+    subject: 'Your OTP for SpaceShift Registration',
+    html: `
+      <p>Hi ${userName},</p>
+      <p>Your One-Time Password (OTP) for registration is:</p>
+      <h2 style="font-size: 24px; letter-spacing: 2px; color: #000; font-weight: bold;">${otp}</h2>
+      <p><strong>This OTP will expire in 10 minutes.</strong></p>
+      <p>Do not share this OTP with anyone. If you didn't request this, please ignore this email.</p>
+      <p>Team SpaceShift</p>
+    `,
+  });
+}
+
 async function sendBookingConfirmation({ to, studentName, seatLabel, shiftName, startDate, endDate, totalAmount }) {
   const transporter = createTransport();
   await transporter.sendMail({
@@ -71,4 +88,4 @@ async function sendCancellationConfirmation({ to, studentName, seatLabel, shiftN
   });
 }
 
-module.exports = { sendBookingConfirmation, sendRenewalReminder, sendCancellationConfirmation };
+module.exports = { sendOtpEmail, sendBookingConfirmation, sendRenewalReminder, sendCancellationConfirmation };

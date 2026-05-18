@@ -80,12 +80,13 @@ describe('checkSeatAvailability', () => {
     expect(result.available).toBe(true);
   });
 
-  it('allows a different shift on the same seat+dates', async () => {
+  it('prevents booking different shift on the same seat+dates (occupies whole day)', async () => {
     const { seat, shift, user } = await createFixtures();
     const evening = await Shift.create({ name: 'Evening', startTime: '14:00', endTime: '22:00' });
     await Booking.create({ user: user._id, seat: seat._id, shift: shift._id, startDate: d('2025-06-01'), endDate: d('2025-06-30'), durationType: '1_month', totalAmount: 120000, status: 'active' });
     const result = await checkSeatAvailability({ seatId: seat._id, shiftId: evening._id, startDate: '2025-06-01', endDate: '2025-06-30' });
-    expect(result.available).toBe(true);
+    expect(result.available).toBe(false);
+    expect(result.conflicts).toHaveLength(1);
   });
 
   it('returns an error reason for inverted dates', async () => {

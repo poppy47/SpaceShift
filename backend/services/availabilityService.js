@@ -19,9 +19,10 @@ async function checkSeatAvailability({ seatId, shiftId, startDate, endDate, excl
     return { available: false, conflicts: [], reason: 'endDate cannot be before startDate' };
   }
 
+  // Check if seat is booked by ANY shift on the same date range
+  // This ensures a seat booked for morning shift is not available for evening shift on the same day
   const query = {
     seat:   seatId,
-    shift:  shiftId,
     status: 'active',
     startDate: { $lte: end },
     endDate:   { $gte: start },
@@ -47,14 +48,16 @@ async function getAvailabilityMap({ shiftId, startDate, endDate }) {
   const start = toUTCMidnight(startDate);
   const end   = toUTCMidnight(endDate);
 
+  // Get all active bookings for this date range, regardless of shift
+  // This ensures if a seat is booked for morning shift, it's unavailable for all other shifts that day
   const activeBookings = await Booking.find({
-    shift:  shiftId,
     status: 'active',
     startDate: { $lte: end },
     endDate:   { $gte: start },
   })
     .populate('user', 'name email phone')
     .populate('seat', 'label section row number')
+    .populate('shift', 'name')
     .lean();
 
   const occupiedMap = new Map();
